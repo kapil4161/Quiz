@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>THE QUIZ</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body onload="setTimeout(showResults,5*60000)">
+	<div id="quiz"></div>
+	<button id="submit">Get Results</button>
+	<div id="results"></div>
+	<script type="text/javascript">
+		
+	var numCorrect = 0;
+	var output = [];
+	var answers;
+	var wans=[];
+	var yans=[];
+	var qno=[];
+	var quizContainer = document.getElementById('quiz');
+	var resultsContainer = document.getElementById('results');
+	var submitButton = document.getElementById('submit');
+	var questions = [
+	{
+		question: "Which of the following are features of TCP Socket Stream?",
+		answers: {
+			a: 'connection-oriented',
+			b: 'simplex',
+			c: 'uni-directional'
+		},
+		correctAnswer: 'a'
+	},
+	{
+		question: "Can we make use of multi-casting in socket programming?",
+		answers: {
+			a: 'yes',
+			b: 'maybe',
+			c: 'no'
+		},
+		correctAnswer: 'a'
+	},
+	{
+		question: "Which of the following are features of UDP Datagram?",
+		answers: {
+			a: 'low latency rate',
+			b: 'sequential Ordering',
+			c: 'allow Send only'
+		},
+		correctAnswer: 'a'
+	},
+	{
+		question: "Can socket stream send data without a connection?",
+		answers: {
+			a: 'no',
+			b: 'yes',
+			c: 'maybe'
+		},
+		correctAnswer: 'a'
+	},
+	{
+		question: "Which of the following are blocking event calls?",
+		answers: {
+			a: 'reject',
+			b: 'disconnect',
+			c: 'connect'
+		},
+		correctAnswer: 'c'
+	},
+	{
+		question: "Can we skip socket binding?",
+		answers: {
+			a: 'no',
+			b: 'yes',
+			c: 'maybe'
+		},
+		correctAnswer: 'b'
+	},
+	{
+		question: "Which of the following are types of participant?",
+		answers: {
+			a: 'Passive',
+			b: 'Open',
+			c: 'Inactive'
+		},
+		correctAnswer: 'a'
+	},
+	{
+		question: "Which of the following are type of valid environments for socket programming?",
+		answers: {
+			a: 'virtual',
+			b: 'proxy',
+			c: 'iterative'
+		},
+		correctAnswer: 'c'
+	},
+	{
+		question: "Is socket programming a point to point connection?",
+		answers: {
+			a: 'yes',
+			b: 'not',
+			c: 'maybe'
+		},
+		correctAnswer: 'a'
+	},
+	{
+		question: "Can we disable TCP Nagle’s Algorithm?",
+		answers: {
+			a: 'maybe',
+			b: 'yes',
+			c: 'no'
+		},
+		correctAnswer: 'b'
+	}
+];
+
+	function showQuestions(){
+	for(var i=0; i<questions.length; i++){
+		answers = [];
+		for(letter in questions[i].answers){
+			answers.push(
+				'<label>'
+					+ '<input type="radio" name="question'+i+'" value="'+letter+'">'
+					+ letter + ': '
+					+ questions[i].answers[letter]
+				+ '</label>'
+			);
+
+		}
+		output.push(
+			'<div class="question">' + questions[i].question + '</div>'
+			+ '<div class="answers">' + answers.join('') + '</div>'
+		);
+	}
+	quizContainer.innerHTML = output.join('');
+}
+	
+
+	function showResults(){
+	var answerContainers = quizContainer.querySelectorAll('.answers');
+	var userAnswer = '';
+	for(var i=0; i<questions.length; i++){
+		userAnswer = (answerContainers[i].querySelector('input[name=question'+i+']:checked')||{}).value;
+		if(userAnswer===questions[i].correctAnswer){
+			numCorrect++;
+			answerContainers[i].style.color = 'lightgreen';
+		}
+		else{
+			answerContainers[i].style.color = 'red';
+			qno.push(i+1);
+			wans.push(questions[i].correctAnswer);
+			yans.push(userAnswer);
+		}
+	}
+	setTimeout(myResult,10000);
+	function myResult(){
+	alert("your result is :"+numCorrect);
+	quizContainer.innerHTML="";
+	resultsContainer.innerHTML="";
+	submitButton.innerHTML="";
+	if(wans.length ==0)
+	{
+		document.write("congrats !!!!!!!!!!!!!!!!!!!!!!! ALL CORRECT");
+	}
+	else
+	{
+		document.write("Your Wrong answer are  "+wans.length+"<br>");
+		for(var i=0;i<wans.length;i++)
+		{
+			document.write("_______________QUESTION NUMBER_______________"+qno[i]+"<br>");
+			document.write("your answer is  "+(yans[i])+"         "+"correct answer is "+wans[i]+"<br>");
+		}
+	}
+  }
+
+	
+}
+
+  showQuestions();
+ submitButton.onclick = function(){
+	showResults();
+}
+	</script>
+</body>
+</html>
